@@ -1,0 +1,60 @@
+name: Azahar Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+   
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v7          
+      - name: Install extra tools
+        run: choco install ccache ninja ptime wget
+
+      - name: Install Vulkan-SDK
+        run: |
+          wget https://sdk.lunarg.com/sdk/download/1.4.304.1/windows/VulkanSDK-1.4.304.1-Installer.exe -O D:/a/_temp/vulkan.exe
+          D:/a/_temp/vulkan.exe --accept-licenses --default-answer --confirm-command install
+
+      - name: Install NSIS
+        run: |
+          wget https://download.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe -O D:/a/_temp/nsis-setup.exe
+          ptime D:/a/_temp/nsis-setup.exe /S
+          
+      - name: Download source code
+        shell: cmd
+        run: |
+          git clone --branch 2126.2 --recurse-submodules https://github.com/azahar-emu/azahar
+          git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Static
+
+      - name: Copy modified source code to original folders
+        shell: cmd
+        run: xcopy /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
+
+      - name: Disable line ending translation
+        run: git config --global core.autocrlf input
+        
+      - name: Build
+        run: ./.ci/windows.sh
+        
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Build
+        working-directory: ${{ github.workspace }}\azahar
+        shell: cmd
+        run: |
+          mkdir build
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC=ON -DUSE_QT6=OFF -DENABLE_GDBSTUB=OFF -DENABLE_DEBUG_DEPS=OFF ^
+          -DQt5_DIR=${{ github.workspace }}\Qt-Win-Static\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
+          -T ClangCL -A x64
+          cmake --build build
+          
+      - name: List dir
+        shell: cmd
+        run: dir /S "${{ github.workspace }}\azahar\build"
