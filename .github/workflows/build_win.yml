@@ -62,6 +62,8 @@ jobs:
           ninja
           ninja bundle
           strip -s bundle/*.exe
+          echo "Listing bundle..."
+          dir /S bundle
           
           ccache -s -v
           ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
