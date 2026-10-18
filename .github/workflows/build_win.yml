@@ -29,7 +29,6 @@ jobs:
           ptime D:/a/_temp/nsis-setup.exe /S
           
       - name: Download source code
-        shell: cmd
         run: |
           git clone --branch 2126.2 --recurse-submodules https://github.com/azahar-emu/azahar
           git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Static
@@ -42,18 +41,26 @@ jobs:
         run: git config --global core.autocrlf input
         
       - name: Build
-        run: ./.ci/windows.sh
-        
-      - uses: ilammy/msvc-dev-cmd@v1
-      - name: Build
-        working-directory: ${{ github.workspace }}\azahar
-        shell: cmd
+        working-directory: ${{github.workspace}}\azahar
         run: |
-          mkdir build
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC=ON -DUSE_QT6=OFF -DENABLE_GDBSTUB=OFF -DENABLE_DEBUG_DEPS=OFF ^
-          -DQt5_DIR=${{ github.workspace }}\Qt-Win-Static\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
-          -T ClangCL -A x64
-          cmake --build build
+          mkdir build && cd build
+          cmake .. -G Ninja \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -DENABLE_DISCORD_RPC=OFF \
+          -DENABLE_WEB_SERVICE=OFF \
+          -DENABLE_GDBSTUB=OFF \
+          -DUSE_SYSTEM_QT=ON \
+          -DQt5_DIR=${{github.workspace}}\Qt-Win-Static\Qt\Qt-5.15.19\lib\cmake\Qt5 \
+          "${EXTRA_CMAKE_FLAGS[@]}"
+          ninja
+          ninja bundle
+          strip -s bundle/*.exe
+          
+          ccache -s -v
+          ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
+        
           
       - name: List dir
         shell: cmd
