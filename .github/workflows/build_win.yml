@@ -45,7 +45,8 @@ jobs:
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
-        
+
+      - uses: azahar-emu/msvc-dev-cmd@v1
       - name: Build
         working-directory: ${{github.workspace}}\azahar
         shell: cmd
