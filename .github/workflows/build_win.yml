@@ -65,6 +65,24 @@ jobs:
           ccache -s -v
           ctest -VV -C Release || echo "::error ::Test error occurred on Windows build"
         
+      - name: Generate installer
+        working-directory: ${{github.workspace}}\azahar
+        shell: cmd
+        run: |
+          cd src\installer
+          "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{ github.ref_name }} citra.nsi
+          mkdir ..\..\artifacts 2> NUL
+          move /y *.exe ..\..\artifacts\
+
+      - name: Pack
+        working-directory: ${{github.workspace}}\azahar
+        run: .ci/pack.sh
+
+      - name: Upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-msvc
+          path: artifacts/
           
       - name: List dir
         shell: cmd
