@@ -15,12 +15,21 @@ jobs:
   build:
     runs-on: windows-2022
     env:
-      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_DIR: ${{ github.workspace }}/azahar/.ccache
       CCACHE_COMPILERCHECK: content
       CCACHE_SLOPPINESS: time_macros
       CACHE_ENABLED: ${{ github.ref_type != 'tag' }}
     steps:
-      - uses: actions/checkout@v7          
+      - uses: actions/checkout@v7
+      - name: Set up cache
+        if: ${{ env.CACHE_ENABLED == 'true' }}
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-msvc-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-msvc-
+      
       - name: Install extra tools
         run: choco install ccache ninja ptime wget
 
@@ -64,14 +73,10 @@ jobs:
           -DENABLE_QT_TRANSLATION=OFF ^
           -DENABLE_QT_UPDATE_CHECKER=OFF ^
           -DUSE_DISCORD_PRESENCE=OFF
-          echo "Listing build 1..."
-          dir
           ninja
-          echo "Listing build 2..."
-          dir
           ninja bundle
           echo "Listing build 3..."
-          dir
+          dir /S bundle
           strip -s bundle/*.exe
           
           ccache -s -v
