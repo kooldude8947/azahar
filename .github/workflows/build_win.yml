@@ -39,6 +39,10 @@ jobs:
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
+
+      - name: List Qt
+        shell: cmd
+        run: echo "Listing Qt directory..." && dir /S "${{github.workspace}}\Qt-Win-Static\Qt\Qt-5.15.19\lib\cmake\Qt5"
         
       - name: Build
         working-directory: ${{github.workspace}}\azahar
