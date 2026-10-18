@@ -8,7 +8,8 @@ on:
     branches:
       - main
 env:
-   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    azahar_version: 2126.2
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
    
 jobs:
   build:
@@ -30,7 +31,7 @@ jobs:
           
       - name: Download source code
         run: |
-          git clone --branch 2126.2 --recurse-submodules https://github.com/azahar-emu/azahar
+          git clone --branch ${{env.azahar_version}} --recurse-submodules https://github.com/azahar-emu/azahar
           git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Static
 
       - name: Copy modified source code to original folders
@@ -70,7 +71,7 @@ jobs:
         shell: cmd
         run: |
           cd src\installer
-          "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{ github.ref_name }} citra.nsi
+          "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{env.azahar_version}} citra.nsi
           mkdir ..\..\artifacts 2> NUL
           move /y *.exe ..\..\artifacts\
 
