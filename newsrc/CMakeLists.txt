@@ -551,7 +551,6 @@ if (USE_SYSTEM_BOOST)
     find_package(Boost 1.70.0 COMPONENTS container locale serialization iostreams REQUIRED)
 endif()
 
-enable_testing()
 add_subdirectory(externals)
 
 # Boost (bundled)
