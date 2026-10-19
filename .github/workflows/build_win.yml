@@ -59,6 +59,7 @@ jobs:
           -DENABLE_QT_TRANSLATION=OFF ^
           -DENABLE_QT_UPDATE_CHECKER=OFF ^
           -DQt5_DIR=${{github.workspace}}\Qt-Win-Shared\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
+          -DUSE_SYSTEM_QT=ON ^
           -DUSE_DISCORD_PRESENCE=OFF
           ninja
           ninja bundle
