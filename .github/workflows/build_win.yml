@@ -36,7 +36,7 @@ jobs:
 
       - name: Copy modified source code to original folders
         shell: cmd
-        run: xcopy /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
+        run: xcopy /h /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
