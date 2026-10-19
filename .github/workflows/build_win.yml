@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install extra tools
-        run: choco install ccache ninja ptime wget pkgconfiglite
+        run: choco install ccache ptime wget
 
       - name: Install Vulkan-SDK
         run: |
