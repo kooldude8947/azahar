@@ -23,12 +23,12 @@ jobs:
           [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://sdk.lunarg.com/sdk/download/1.4.304.1/windows/VulkanSDK-1.4.304.1-Installer.exe -OutFile D:/a/_temp/vulkan.exe
+          Invoke-WebRequest -Uri https://download.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe -OutFile D:/a/_temp/nsis-setup.exe
+          
           D:/a/_temp/vulkan.exe --accept-licenses --default-answer --confirm-command install
 
       - name: Install NSIS
         run: |
-          Invoke-WebRequest -Uri https://download.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe -OutFile D:/a/_temp/nsis-setup.exe
-          
           D:/a/_temp/nsis-setup.exe /S
           
       - name: Download source code
