@@ -8,7 +8,7 @@
 #include <QMessageBox>
 #include <QThread>
 #include "citra_qt/camera/qt_multimedia_camera.h"
-#include "citra_qt/main.h"
+#include "citra_qt/citra_qt.h"
 
 #if defined(__APPLE__)
 #include "citra_qt/macos_authorization.h"
