@@ -16,18 +16,23 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v7
-      - name: Install extra tools
-        run: choco install ccache ptime wget
 
       - name: Install Vulkan-SDK
         run: |
-          wget https://sdk.lunarg.com/sdk/download/1.4.304.1/windows/VulkanSDK-1.4.304.1-Installer.exe -O D:/a/_temp/vulkan.exe
+          $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
+          [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri https://sdk.lunarg.com/sdk/download/1.4.304.1/windows/VulkanSDK-1.4.304.1-Installer.exe -OutFile D:/a/_temp/vulkan.exe
           D:/a/_temp/vulkan.exe --accept-licenses --default-answer --confirm-command install
 
       - name: Install NSIS
         run: |
-          wget https://download.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe -O D:/a/_temp/nsis-setup.exe
-          ptime D:/a/_temp/nsis-setup.exe /S
+          $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12'
+          [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri https://download.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe -OutFile D:/a/_temp/nsis-setup.exe
+          
+          D:/a/_temp/nsis-setup.exe /S
           
       - name: Download source code
         run: |
@@ -49,8 +54,6 @@ jobs:
           mkdir build && cd build
           cmake .. -G Ninja ^
           -DCMAKE_BUILD_TYPE=Release ^
-          -DCMAKE_C_COMPILER_LAUNCHER=ccache ^
-          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ^
           -DENABLE_DISCORD_RPC=OFF ^
           -DENABLE_WEB_SERVICE=OFF ^
           -DENABLE_SCRIPTING=OFF ^
