@@ -32,7 +32,7 @@ jobs:
       - name: Download source code
         run: |
           git clone --branch ${{env.azahar_version}} --recurse-submodules https://github.com/azahar-emu/azahar
-          git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Static
+          git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Shared
 
       - name: Copy modified source code to original folders
         shell: cmd
@@ -58,7 +58,7 @@ jobs:
           -DENABLE_QT=ON ^
           -DENABLE_QT_TRANSLATION=OFF ^
           -DENABLE_QT_UPDATE_CHECKER=OFF ^
-          -DQt5_DIR=${{github.workspace}}\Qt-Win-Static\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
+          -DQt5_DIR=${{github.workspace}}\Qt-Win-Shared\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
           -DUSE_DISCORD_PRESENCE=OFF
           ninja
           ninja bundle
