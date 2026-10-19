@@ -336,6 +336,8 @@ if (APPLE)
 elseif (WIN32)
     # WSAPoll and SHGetKnownFolderPath (AppData/Roaming) didn't exist before WinNT 6.x (Vista)
     add_definitions(-D_WIN32_WINNT=0x0601 -DWINVER=0x0601)
+    # cubeb's WASAPI code sets the Option parameter on the struct AudioClientProperties (which is only available since Win 8.1) if __MINGW32__ isn't defined.
+    add_definitions(-D__MINGW32__=1)
     set(PLATFORM_LIBRARIES winmm ws2_32)
     if (MINGW)
         # PSAPI is the Process Status API
