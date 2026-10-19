@@ -46,8 +46,8 @@ jobs:
         working-directory: ${{github.workspace}}\azahar
         shell: cmd
         run: |
-          mkdir build && cd build
-          cmake .. -G Ninja ^
+          mkdir build
+          cmake -S . -B build -G Ninja ^
           -DCMAKE_BUILD_TYPE=Release ^
           -DCMAKE_C_COMPILER_LAUNCHER=ccache ^
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ^
@@ -61,9 +61,10 @@ jobs:
           -DQt5_DIR=${{github.workspace}}\Qt-Win-Shared\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
           -DUSE_SYSTEM_QT=ON ^
           -DUSE_DISCORD_PRESENCE=OFF
+          cd build
           ninja
           ninja bundle
-          echo "Listing build 3..."
+          echo "Listing bundle folder..."
           dir /S bundle
           strip -s bundle/*.exe
           
