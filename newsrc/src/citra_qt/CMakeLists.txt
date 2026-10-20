@@ -239,14 +239,8 @@ if (ENABLE_QT_TRANSLATION)
     if (GENERATE_QT_TRANSLATION)
         get_target_property(QT_SRCS citra_qt SOURCES)
         get_target_property(QT_INCLUDES citra_qt INCLUDE_DIRECTORIES)
-        qt_add_lupdate(
-            LUPDATE_TARGET citra_qt_lupdate
-            SOURCES ${QT_SRCS} ${UIS}
-            TS_FILES ${CITRA_QT_LANGUAGES}/en.ts
-            INCLUDE_DIRECTORIES ${QT_INCLUDES}
-            NO_GLOBAL_TARGET
-        )
-        add_custom_target(translation ALL DEPENDS citra_qt_lupdate)
+        qt5_create_translation(QM_FILES ${QT_SRCS} ${UIS} ${CITRA_QT_LANGUAGES}/en.ts)
+        add_custom_target(translation ALL DEPENDS ${CITRA_QT_LANGUAGES}/en.ts)
     endif()
 
     # Find all TS files for Citra translations except en.ts
@@ -254,7 +248,7 @@ if (ENABLE_QT_TRANSLATION)
     list(REMOVE_ITEM CITRA_LANGUAGES_TS ${CITRA_QT_LANGUAGES}/en.ts)
 
     # Compile Citra TS files to QM files
-    qt_add_lrelease(citra_qt TS_FILES ${CITRA_LANGUAGES_TS} NO_GLOBAL_TARGET QM_FILES_OUTPUT_VARIABLE CITRA_LANGUAGES_QM)
+    qt5_add_translation(LANGUAGES_QM ${CITRA_LANGUAGES_TS})
 
     # Find all QM files for Qt translations
     file(GLOB_RECURSE QT_LANGUAGES_QM ${BASE_QT_LANGUAGES}/qtbase_*.qm)
@@ -272,7 +266,7 @@ if (ENABLE_QT_TRANSLATION)
     file(APPEND ${LANGUAGES_QRC} "</qresource></RCC>")
 
     # Add the QRC file to package in all QM files
-    qt_add_resources(LANGUAGES ${LANGUAGES_QRC})
+    qt5_add_resources(LANGUAGES ${LANGUAGES_QRC})
 else()
     set(LANGUAGES)
 endif()
