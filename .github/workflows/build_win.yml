@@ -65,16 +65,8 @@ jobs:
           ninja
           ninja bundle
           strip -s bundle/*.exe
-          
-      - name: Generate installer
-        working-directory: ${{github.workspace}}\azahar
-        shell: cmd
-        run: |
-          cd src\installer
-          "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{env.azahar_version}} citra.nsi
-          move /y *.exe ..\..\build\bundle\
 
-      - name: Copy misc. files
+      - name: Copy extra files
         env:
           openssl_location: C:\Program Files\OpenSSL
         working-directory: ${{github.workspace}}\azahar
@@ -83,6 +75,14 @@ jobs:
           copy /y /v "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.44.35112\x64\Microsoft.VC143.CRT\msvcp140.dll" build\bundle
           copy "${{ env.openssl_location }}\bin\libcrypto-3-x64.dll" build\bundle
           copy "${{ env.openssl_location }}\bin\libssl-3-x64.dll" build\bundle
+          
+      - name: Generate installer
+        working-directory: ${{github.workspace}}\azahar
+        shell: cmd
+        run: |
+          cd src\installer
+          "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{env.azahar_version}} citra.nsi
+          move /y *.exe ..\..\build\bundle\
           
       - name: Upload
         uses: actions/upload-artifact@v7
