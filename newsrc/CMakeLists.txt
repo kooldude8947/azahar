@@ -389,7 +389,7 @@ if (ENABLE_QT)
     endif()
 
     if (ENABLE_QT_TRANSLATION)
-        find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+        find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
     endif()
 
     if (NOT DEFINED QT_TARGET_PATH)
