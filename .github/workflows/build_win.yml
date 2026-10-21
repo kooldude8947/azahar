@@ -30,6 +30,7 @@ jobs:
           ptime D:/a/_temp/nsis-setup.exe /S
           
       - name: Download source code
+        shell: cmd
         run: |
           git clone --branch ${{env.azahar_version}} --recurse-submodules https://github.com/azahar-emu/azahar
           git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Shared
