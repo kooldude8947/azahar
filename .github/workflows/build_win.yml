@@ -33,17 +33,21 @@ jobs:
         shell: cmd
         run: |
           git clone --branch ${{env.azahar_version}} https://github.com/azahar-emu/azahar
+          git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Shared
+
+      - name: Copy modified source code to original folders
+        shell: cmd
+        run: xcopy /h /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
+
+      - name: Init submodules
+        shell: cmd
+        run: |
           cd azahar
           cd externals
           rmdir /s cubeb
           cd ..
           git submodule init
           git submodule update
-          git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Shared
-
-      - name: Copy modified source code to original folders
-        shell: cmd
-        run: xcopy /h /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
