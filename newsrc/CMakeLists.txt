@@ -133,7 +133,7 @@ option(ENABLE_SCRIPTING "Enable RPC server for scripting" ON)
 CMAKE_DEPENDENT_OPTION(ENABLE_SCRIPTING_SYNC "Run scripting RPC requests that access emulated state on the emulation thread, in sync with the core" ON "ENABLE_SCRIPTING" OFF)
 option(ENABLE_GDBSTUB "Enable GDB stub for emulated applications" ON)
 
-CMAKE_DEPENDENT_OPTION(ENABLE_CUBEB "Enables the cubeb audio backend" OFF "NOT IOS" OFF)
+CMAKE_DEPENDENT_OPTION(ENABLE_CUBEB "Enables the cubeb audio backend" ON "NOT IOS" OFF)
 option(ENABLE_OPENAL "Enables the OpenAL audio backend" ON)
 
 CMAKE_DEPENDENT_OPTION(ENABLE_LIBUSB "Enable libusb for GameCube Adapter support" ON "NOT IOS" OFF)
