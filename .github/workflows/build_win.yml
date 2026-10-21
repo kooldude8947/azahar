@@ -48,6 +48,8 @@ jobs:
           cd ..
           git submodule init
           git submodule update
+          cd cubeb
+          git submodule update --init --recursive
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
