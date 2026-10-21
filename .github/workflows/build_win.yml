@@ -22,5 +22,6 @@ jobs:
           echo "Listing root folder..."
           dir azahar
           echo "Listing externals folder..."
-          dir azahar/externals
+          cd azahar
+          dir externals
           armdir /s azahar/externals/cubeb
