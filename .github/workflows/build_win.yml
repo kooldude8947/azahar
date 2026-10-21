@@ -82,10 +82,15 @@ jobs:
         run: |
           cd src\installer
           "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{env.azahar_version}} citra.nsi
-          move /y *.exe ..\..\build\bundle\
           
       - name: Upload
         uses: actions/upload-artifact@v7
         with:
-          name: windows-msvc
+          name: azahar-windows-msvc-${{env.azahar_version}}
           path: ${{github.workspace}}\azahar\build\bundle
+          
+      - name: Upload installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: azahar-windows-msvc-${{env.azahar_version}}-installer
+          path: ${{github.workspace}}\azahar\src\installer\azahar-windows-msvc-${{env.azahar_version}}-installer.exe
