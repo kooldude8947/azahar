@@ -270,6 +270,7 @@ if(USE_WASAPI)
   target_sources(cubeb PRIVATE
     src/cubeb_wasapi.cpp)
   target_compile_definitions(cubeb PRIVATE USE_WASAPI)
+  # Hack to make it compile for Windows 7
   target_compile_definitions(cubeb PRIVATE __MINGW32__)
   target_link_libraries(cubeb PRIVATE avrt ole32 ksuser)
 endif()
