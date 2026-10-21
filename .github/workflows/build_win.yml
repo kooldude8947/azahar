@@ -59,8 +59,7 @@ jobs:
           -DENABLE_QT_TRANSLATION=OFF ^
           -DENABLE_QT_UPDATE_CHECKER=OFF ^
           -DQt5_DIR=${{github.workspace}}\Qt-Win-Shared\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
-          -DUSE_SYSTEM_QT=ON ^
-          -DUSE_DISCORD_PRESENCE=OFF
+          -DUSE_SYSTEM_QT=ON
           cd build
           ninja
           ninja bundle
@@ -83,7 +82,7 @@ jobs:
           cd src\installer
           "C:\Program Files (x86)\NSIS\makensis.exe" /DPRODUCT_VARIANT=msvc /DPRODUCT_VERSION=${{env.azahar_version}} citra.nsi
           
-      - name: Upload
+      - name: Upload bundle
         uses: actions/upload-artifact@v7
         with:
           name: azahar-windows-msvc-${{env.azahar_version}}
