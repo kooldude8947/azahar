@@ -32,7 +32,7 @@ jobs:
       - name: Download source code
         shell: cmd
         run: |
-          git clone --branch ${{env.azahar_version}} --recurse-submodules https://github.com/azahar-emu/azahar
+          git clone --branch ${{env.azahar_version}} https://github.com/azahar-emu/azahar
           cd azahar
           cd externals
           rmdir /s cubeb
