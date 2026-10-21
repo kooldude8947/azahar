@@ -33,10 +33,19 @@ jobs:
         run: |
           git clone --branch ${{env.azahar_version}} --recurse-submodules https://github.com/azahar-emu/azahar
           git clone https://github.com/${{ github.repository_owner }}/Qt-Win-Shared
+          cd azahar
+          cd externals
+          echo "Listing cubeb directory..."
+          dir /S cubeb
 
       - name: Copy modified source code to original folders
         shell: cmd
-        run: xcopy /h /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
+        run: |
+          xcopy /h /q /s /x /y ${{ github.workspace }}\newsrc ${{ github.workspace }}\azahar
+          cd azahar
+          cd externals
+          echo "Listing cubeb directory again..."
+          dir /S cubeb
 
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
