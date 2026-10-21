@@ -16,6 +16,7 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Download source code
+        shell: cmd
         run: |
           git clone --branch ${{env.azahar_version}} https://github.com/azahar-emu/azahar
           echo "Listing root folder..."
