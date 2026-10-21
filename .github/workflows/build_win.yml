@@ -56,11 +56,10 @@ jobs:
           -DENABLE_SCRIPTING=ON ^
           -DENABLE_GDBSTUB=ON ^
           -DENABLE_QT=ON ^
-          -DENABLE_QT_TRANSLATION=ON ^
+          -DENABLE_QT_TRANSLATION=OFF ^
           -DENABLE_QT_UPDATE_CHECKER=ON ^
           -DQt5_DIR=${{github.workspace}}\Qt-Win-Shared\Qt\Qt-5.15.19\lib\cmake\Qt5 ^
-          -DUSE_SYSTEM_QT=ON ^
-          -DUSE_DISCORD_PRESENCE=ON
+          -DUSE_SYSTEM_QT=ON
           cd build
           ninja
           ninja bundle
